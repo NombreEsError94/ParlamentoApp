@@ -11,7 +11,23 @@ def instantiateDb():
         print("Creating tables")
         cursor.execute("CREATE TABLE Initiatives(id, title, text, PRIMARY KEY(id))")
         cursor.execute("CREATE TABLE Votes(id INTEGER, initiativeId INTEGER, fase TEXT, result TEXT, details TEXT, date TEXT, PRIMARY KEY(id), FOREIGN KEY(initiativeId) REFERENCES Initiatives(id) )")
-        cursor.execute("CREATE TABLE Parties(acronym TEXT, name TEXT)")
+        cursor.execute("CREATE TABLE ParliamentGroups(acronym TEXT, name TEXT)")
+
+    connection.commit()
+
+def getParliamentGroups():
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM ParliamentGroups")
+    parliamentGroups = cursor.fetchall()
+    
+    cursor.close()
+
+    return parliamentGroups
+
+def insertParliamentGroups(parliamentGroups):
+    cursor = connection.cursor()
+    cursor.executemany("INSERT INTO ParliamentGroups VALUES(?, ?)", parliamentGroups)
+    cursor.close()
 
     connection.commit()
 
