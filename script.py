@@ -2,20 +2,21 @@ from Database.sqliteConnector import *
 from Parsers.parliamentGroupsParser import parseParliamentGroups
 from Parsers.initiativesParser import parseInitiatives
 
-instantiateDb()
+initDb()
 
 parsedParliamentGroups = parseParliamentGroups()
 parliamentGroups = getParliamentGroups()
 
-diff = [group for group in parsedParliamentGroups if group[0] not in [x[0] for x in parliamentGroups]]
+parliamentDiff = [group for group in parsedParliamentGroups if group.acronym not in [x.acronym for x in parliamentGroups]]
 
-print(parsedParliamentGroups)
-print(parliamentGroups)
+print(len(parliamentDiff))
 
-print(diff)
+if len(parliamentDiff) > 0:
+    insertParliamentGroups(parliamentDiff)
 
-if len(diff) > 0:
-    insertParliamentGroups(diff)
+parsedInitiatives = parseInitiatives()
+initiatives = getInitiatives()
 
+insertInitiatives(parsedInitiatives)
 
 close()

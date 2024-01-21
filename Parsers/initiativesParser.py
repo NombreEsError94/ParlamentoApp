@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+from Models.initiative import Initiative
+from Models.vote import Vote
 
 def parseInitiatives():
     doc = ET.parse("IniciativasXV.xml")
@@ -7,9 +9,9 @@ def parseInitiatives():
     initiativeList = rootNode.findall("pt_gov_ar_objectos_iniciativas_DetalhePesquisaIniciativasOut")
 
     parsedInitiatives = []
-    parsedVotes = []
 
     for initiative in initiativeList:
+        parsedVotes = []
         title = initiative.find("iniTitulo").text
         textLink = initiative.find("iniLinkTexto").text
         initiativeId = initiative.find("iniId").text
@@ -20,7 +22,7 @@ def parseInitiatives():
             eventList = eventsRootNode[0].findall("pt_gov_ar_objectos_iniciativas_EventosOut")
             if eventList != []:
                 for event in eventList:
-                    fase = event.find("fase").text
+                    phase = event.find("fase").text
                     voteRootNode = event.findall("votacao")
 
                     if voteRootNode != []:
@@ -32,10 +34,8 @@ def parseInitiatives():
 
                         votingDetails = votingDetails.text if votingDetails is not None else None
 
-                        parsedVotes.append((voteId, initiativeId, fase, result, votingDetails, date))
+                        parsedVotes.append(Vote(voteId, initiativeId, phase, result, votingDetails, date))
 
-
-
-        parsedInitiatives.append((initiativeId, title, textLink))
+        parsedInitiatives.append(Initiative(initiativeId, title, textLink, parsedVotes))
     
     return parsedInitiatives

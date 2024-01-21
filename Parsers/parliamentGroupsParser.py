@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ET
+from Models.parliamentGroup import ParliamentGroup
 
 def parseParliamentGroups():
     doc = ET.parse("InformacaoBaseXV.xml")
@@ -12,6 +13,6 @@ def parseParliamentGroups():
         acronym = group.find("sigla").text
         name = group.find("nome").text
 
-        parsedGroups.append((acronym, name))
+        parsedGroups.append(ParliamentGroup(acronym, name))
     
     return parsedGroups
