@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 from Models.parliamentGroup import ParliamentGroup
 
 def parseParliamentGroups():
-    doc = ET.parse("InformacaoBaseXV.xml")
+    doc = ET.parse("parliamentGroups.xml")
     rootNode = doc.getroot()
 
     parliamentGroupList = rootNode.findall(".//pt_gov_ar_objectos_GPOut")

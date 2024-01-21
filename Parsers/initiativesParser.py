@@ -3,7 +3,7 @@ from Models.initiative import Initiative
 from Models.vote import Vote
 
 def parseInitiatives():
-    doc = ET.parse("IniciativasXV.xml")
+    doc = ET.parse("initiatives.xml")
     rootNode = doc.getroot()
 
     initiativeList = rootNode.findall("pt_gov_ar_objectos_iniciativas_DetalhePesquisaIniciativasOut")

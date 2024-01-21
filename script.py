@@ -1,6 +1,10 @@
 from Database.sqliteConnector import *
 from Parsers.parliamentGroupsParser import parseParliamentGroups
 from Parsers.initiativesParser import parseInitiatives
+from WebScraper.scraper import *
+
+downloadInitiativesFile()
+downloadParliamentGroupsFile()
 
 initDb()
 
