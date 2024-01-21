@@ -46,6 +46,14 @@ def insertParliamentGroups(parliamentGroups):
     connection.commit()
 
 def insertInitiatives(initiatives):
+
+    cursor = connection.cursor()
+
+    cursor.execute("DELETE FROM Initiatives")
+    cursor.execute("DELETE FROM Votes")
+
+    connection.commit()
+
     initiativesToInsert = []
     votesToInsert = []
 
@@ -61,12 +69,7 @@ def insertInitiatives(initiatives):
         initiativesToInsert.append(initiativeTuple)
         votesToInsert.extend(list(votesTuple))
 
-
-    cursor = connection.cursor()
     cursor.executemany("INSERT INTO Initiatives VALUES(?, ?, ?)", initiativesToInsert)
-
-    connection.commit()
-
     cursor.executemany("INSERT INTO Votes VALUES(?, ?, ?, ?, ?, ?)", votesToInsert)
 
     cursor.close()
