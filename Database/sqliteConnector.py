@@ -15,6 +15,7 @@ def initDb():
         print("Creating tables")
         cursor.execute("CREATE TABLE Initiatives(id INTEGER, title TEXT, text TEXT, PRIMARY KEY(id))")
         cursor.execute("CREATE TABLE Votes(id INTEGER, initiativeId INTEGER, fase TEXT, result TEXT, details TEXT, date TEXT, PRIMARY KEY(id), FOREIGN KEY(initiativeId) REFERENCES Initiatives(id) )")
+        cursor.execute("CREATE TABLE ParliamentGroupsVotes(parliamentGroupAcronym TEXT, voteId INTEGER, vote TEXT, PRIMARY KEY(parliamentGroupAcronym, voteId), FOREIGN KEY(parliamentGroupAcronym) REFERENCES ParliamentGroups(acronym), FOREIGN KEY(voteId) REFERENCES Votes(id))")
         cursor.execute("CREATE TABLE ParliamentGroups(acronym TEXT, name TEXT, PRIMARY KEY(acronym))")
 
     connection.commit()
@@ -51,6 +52,7 @@ def insertInitiatives(initiatives):
 
     cursor.execute("DELETE FROM Initiatives")
     cursor.execute("DELETE FROM Votes")
+    cursor.execute("DELETE FROM ParliamentGroupsVotes")
 
     connection.commit()
 
