@@ -12,7 +12,7 @@ class Vote:
     # If approved, votingDetails will contain
     @staticmethod
     def getVotingParliamentGroups(vote, parliamentGroups):
-        votingDetails = vote.votingDetails
+        votingDetails = vote[4]
         approved = []
         rejected = []
         abstentions = []
@@ -50,7 +50,7 @@ class Vote:
     
     @staticmethod
     def __getMissingParliamentGroups(completeList, subList):
-        return completeList - subList
+        return [x for x in completeList if x not in subList]
 
 
 

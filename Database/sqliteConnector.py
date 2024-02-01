@@ -1,5 +1,6 @@
 import sqlite3
 from Models.parliamentGroup import ParliamentGroup
+from Models.vote import Vote
 
 connection = sqlite3.connect("parliament.db")
 
@@ -48,6 +49,8 @@ def insertParliamentGroups(parliamentGroups):
 
 def insertInitiatives(initiatives):
 
+    parliamentGroups = getParliamentGroups()
+
     cursor = connection.cursor()
 
     cursor.execute("DELETE FROM Initiatives")
@@ -71,8 +74,23 @@ def insertInitiatives(initiatives):
         initiativesToInsert.append(initiativeTuple)
         votesToInsert.extend(list(votesTuple))
 
+    votesPerParliamentGroup = list(map(lambda v: (v[0], Vote.getVotingParliamentGroups(v, map(lambda p: p.acronym, parliamentGroups))), votesToInsert))
+    parliamentGroupsVotes = []
+
+    for item in votesPerParliamentGroup:
+        voteId = item[0]
+        approved = item[1][0]
+        rejected = item[1][1]
+        abstentions = item[1][2]
+
+        parliamentGroupsVotes.extend(list(map(lambda v: (v, voteId, "Approved"), approved)))
+        parliamentGroupsVotes.extend(list(map(lambda v: (v, voteId, "Rejected"), rejected)))
+        parliamentGroupsVotes.extend(list(map(lambda v: (v, voteId, "Abstention"), abstentions)))
+        
+
     cursor.executemany("INSERT INTO Initiatives VALUES(?, ?, ?)", initiativesToInsert)
     cursor.executemany("INSERT INTO Votes VALUES(?, ?, ?, ?, ?, ?)", votesToInsert)
+    cursor.executemany("INSERT INTO ParliamentGroupsVotes VALUES(?, ?, ?)", parliamentGroupsVotes)
 
     cursor.close()
 
