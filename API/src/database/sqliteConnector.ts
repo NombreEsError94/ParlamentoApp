@@ -1,5 +1,5 @@
 const { AsyncDatabase } = require("promised-sqlite3");
-import dbConnector from '../Interfaces/dbConnector.js';
+import dbConnector from '../interfaces/dbConnector.js';
 
 export default class SqliteConnector implements dbConnector{
 

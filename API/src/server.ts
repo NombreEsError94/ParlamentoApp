@@ -1,6 +1,6 @@
 import express, { Express, Request, Response} from "express";
 import dotenv from "dotenv";
-import SqliteConnector from "./Database/sqliteConnector";
+import SqliteConnector from "./database/sqliteConnector";
 
 dotenv.config();
 
