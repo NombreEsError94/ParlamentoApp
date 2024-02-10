@@ -10,12 +10,8 @@ export default class SqliteConnector implements dbConnector{
         this.dbPath = dbPath;
     }
 
-    async connect(){
-        if(!this.db)
-            this.db = await AsyncDatabase.open(this.dbPath);  
-    }
-
-    async getParliamentGroups(){
+    async getParliamentGroups(): Promise<any[]> {
+        await this.connect();
         const query = "SELECT * FROM ParliamentGroups";
 
         const result = await this.db.all(query);
@@ -29,7 +25,29 @@ export default class SqliteConnector implements dbConnector{
             })
         });
 
-        return parliamentGroups;
+        await this.close();
 
+        return parliamentGroups;
+    }
+
+    async getParliamentGroupByAcronym(acronym: string): Promise<any> {
+        await this.connect();
+
+        const query = `SELECT * FROM ParliamentGroups WHERE acronym ='${acronym}'`;
+        const result = await this.db.get(query);
+
+        await this.close();
+
+        return result;
+    }
+
+    async connect(){
+        if(!this.db)
+            this.db = await AsyncDatabase.open(this.dbPath);  
+    }
+
+    async close(){
+        if(this.db)
+            await this.db.close();
     }
 }
