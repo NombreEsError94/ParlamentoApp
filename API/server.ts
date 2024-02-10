@@ -1,18 +1,20 @@
 import express, { Express, Request, Response} from "express";
 import dotenv from "dotenv";
-import connect from './Database/sqliteConnector';
+import SqliteConnector from './Database/sqliteConnector';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+const dbConnector = new SqliteConnector(process.env.DBPATH || '');
 
 app.get('/test', (req: Request, res: Response) => {
     res.send("Hello test");
 });
 
 app.get('/parliamentGroups', async (req, res) => {
-    const parliamentGroups = await connect();
+    await dbConnector.connect();
+    const parliamentGroups = await dbConnector.getParliamentGroups();
     res.status(200).json(parliamentGroups);
 });
 

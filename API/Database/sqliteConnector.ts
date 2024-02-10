@@ -1,19 +1,35 @@
 const { AsyncDatabase } = require("promised-sqlite3");
+import dbConnector from '../Interfaces/dbConnector.js';
 
-export default async function connect(){
-    const db = await AsyncDatabase.open("../DataExtractor/parliament.db");
+export default class SqliteConnector implements dbConnector{
 
-    const query = "SELECT * FROM ParliamentGroups";
+    dbPath:string;
+    db:any;
 
-    const result = await db.all(query);
-    let parliamentGroups: any = [];
+    constructor(dbPath: string){
+        this.dbPath = dbPath;
+    }
 
-    result.forEach((row: { acronym: any; name: any; }) => {
-        parliamentGroups.push({
-            acronym: row.acronym,
-            name: row.name
-        })
-    });
+    async connect(){
+        if(!this.db)
+            this.db = await AsyncDatabase.open(this.dbPath);  
+    }
 
-    return parliamentGroups;
+    async getParliamentGroups(){
+        const query = "SELECT * FROM ParliamentGroups";
+
+        const result = await this.db.all(query);
+
+        let parliamentGroups: any = [];
+
+        result.forEach((row: { acronym: any; name: any; }) => {
+            parliamentGroups.push({
+                acronym: row.acronym,
+                name: row.name
+            })
+        });
+
+        return parliamentGroups;
+
+    }
 }
