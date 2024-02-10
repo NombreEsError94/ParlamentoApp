@@ -1,4 +1,4 @@
-export default interface ParliamentGroups{
+export default interface ParliamentGroup{
     acronym: string;
     name: string;
 }

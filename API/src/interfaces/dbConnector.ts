@@ -1,4 +1,6 @@
+import ParliamentGroup from "../models/parliamentGroup";
+
 export default interface dbConnector{
-    getParliamentGroups(): Promise<any[]>;
-    getParliamentGroupByAcronym(acronym:string): Promise<any>;
+    getParliamentGroups(): Promise<ParliamentGroup[]>;
+    getParliamentGroupByAcronym(acronym:string): Promise<ParliamentGroup>;
 }
