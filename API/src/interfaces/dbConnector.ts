@@ -7,5 +7,5 @@ export default interface dbConnector{
     getParliamentGroupByAcronym(acronym:string): Promise<ParliamentGroup>;
     getInitiatives(): Promise<Initiative[]>;
     getInitiativeById(id:number): Promise<Initiative>;
-    getVotesByInitiativeId(initiativeId:number): Promise<Vote[]>;
+    getVotesByInitiativeId(initiativeId:number): Promise<Vote>;
 }

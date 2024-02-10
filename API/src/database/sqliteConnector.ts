@@ -1,4 +1,5 @@
 const { AsyncDatabase } = require("promised-sqlite3");
+import { Init } from 'v8';
 import dbConnector from '../interfaces/dbConnector.js';
 import Initiative from '../models/initiative.js';
 import ParliamentGroup from '../models/parliamentGroup.js';
@@ -17,17 +18,7 @@ export default class SqliteConnector implements dbConnector{
         await this.connect();
         const query = "SELECT * FROM Initiatives";
 
-        const result = await this.db.all(query);
-
-        let initiatives: Initiative[] = [];
-
-        result.forEach((row: Initiative) => {
-            initiatives.push({
-                id: row.id,
-                text: row.text,
-                title: row.title
-            })
-        });
+        const result = <Initiative[]>await this.db.all(query);
 
         await this.close();
 
@@ -38,19 +29,19 @@ export default class SqliteConnector implements dbConnector{
         await this.connect();
         const query = `SELECT * FROM Initiatives WHERE id = '${id}'`;
 
-        const result = await this.db.get(query);
+        const result = <Initiative>await this.db.get(query);
 
         await this.close();
 
         return result;
     }
     
-    async getVotesByInitiativeId(initiativeId: number): Promise<Vote[]> {
+    async getVotesByInitiativeId(initiativeId: number): Promise<Vote> {
         await this.connect();
 
         const query = `SELECT * FROM Votes WHERE initiativeId = '${initiativeId}'`;
 
-        const result = await this.db.get(query);
+        const result = <Vote>await this.db.get(query);
 
         const parliamentGroupVotes = await this.db.all(`
             SELECT * FROM ParliamentGroupsVotes WHERE VoteId = '${result.id}'
@@ -67,27 +58,18 @@ export default class SqliteConnector implements dbConnector{
         await this.connect();
         const query = "SELECT * FROM ParliamentGroups";
 
-        const result = await this.db.all(query);
-
-        let parliamentGroups: ParliamentGroup[] = [];
-
-        result.forEach((row: ParliamentGroup) => {
-            parliamentGroups.push({
-                acronym: row.acronym,
-                name: row.name
-            })
-        });
+        const result = <ParliamentGroup[]>await this.db.all(query);
 
         await this.close();
 
-        return parliamentGroups;
+        return result;
     }
 
     async getParliamentGroupByAcronym(acronym: string): Promise<ParliamentGroup> {
         await this.connect();
 
         const query = `SELECT * FROM ParliamentGroups WHERE acronym ='${acronym}'`;
-        const result = await this.db.get(query);
+        const result = <ParliamentGroup>await this.db.get(query);
 
         await this.close();
 
