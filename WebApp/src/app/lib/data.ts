@@ -1,10 +1,10 @@
 const { AsyncDatabase } = require("promised-sqlite3");
 import { Init } from 'v8';
-import dbConnector from '../interfaces/dbConnector.js';
-import Initiative from '../models/initiative.js';
-import ParliamentGroup from '../models/parliamentGroup.js';
-import ParliamentGroupVote from '../models/parliamentGroupVote.js';
-import Vote from '../models/vote.js';
+import dbConnector from './interfaces/dbConnector.js';
+import Initiative from './models/initiative.js';
+import ParliamentGroup from './models/parliamentGroup.js';
+import ParliamentGroupVote from './models/parliamentGroupVote.js';
+import Vote from './models/vote.js';
 
 export default class SqliteConnector implements dbConnector{
 
