@@ -2,7 +2,7 @@ import SqliteConnector from "../lib/data";
 
 export default async function ParliamentGroups(){
 
-    const connector = new SqliteConnector('../DataExtractor/parliament.db');
+    const connector = new SqliteConnector('../DataExtractor/python/parliament.db');
     const parliamentGroups = await connector.getParliamentGroups();
     var display = [];
 

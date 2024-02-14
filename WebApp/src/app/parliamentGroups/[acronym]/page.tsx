@@ -4,7 +4,7 @@ export default async function ParliamentGroup({ params }: { params: { acronym: s
 
     const { acronym } = params;
 
-    const connector = new SqliteConnector('../DataExtractor/parliament.db');
+    const connector = new SqliteConnector('../DataExtractor/python/parliament.db');
     const parliamentGroup = await connector.getParliamentGroupByAcronym(acronym);
 
     return <>
