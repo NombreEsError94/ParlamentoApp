@@ -14,10 +14,10 @@ def initDb():
 
     if cursor.fetchall() == []:
         print("Creating tables")
-        cursor.execute("CREATE TABLE Initiatives(id INTEGER, title TEXT, text TEXT, PRIMARY KEY(id))")
+        cursor.execute("CREATE TABLE Initiatives(id INTEGER, title TEXT, text TEXT, legislature TEXT, PRIMARY KEY(id))")
         cursor.execute("CREATE TABLE Votes(id INTEGER, initiativeId INTEGER, fase TEXT, result TEXT, details TEXT, date TEXT, PRIMARY KEY(id), FOREIGN KEY(initiativeId) REFERENCES Initiatives(id) )")
         cursor.execute("CREATE TABLE ParliamentGroupsVotes(parliamentGroupAcronym TEXT, voteId INTEGER, vote TEXT, PRIMARY KEY(parliamentGroupAcronym, voteId), FOREIGN KEY(parliamentGroupAcronym) REFERENCES ParliamentGroups(acronym), FOREIGN KEY(voteId) REFERENCES Votes(id))")
-        cursor.execute("CREATE TABLE ParliamentGroups(acronym TEXT, name TEXT, PRIMARY KEY(acronym))")
+        cursor.execute("CREATE TABLE ParliamentGroups(acronym TEXT, name TEXT, legislature TEXT, PRIMARY KEY(acronym))")
 
     connection.commit()
 
@@ -28,7 +28,7 @@ def getParliamentGroups():
     
     cursor.close()
 
-    return list(map(lambda g: ParliamentGroup(g[0], g[1]), parliamentGroups))
+    return list(map(lambda g: ParliamentGroup(g[0], g[1], g[2]), parliamentGroups))
 
 def getInitiatives():
     cursor = connection.cursor()
@@ -41,8 +41,8 @@ def getInitiatives():
 
 def insertParliamentGroups(parliamentGroups):
     cursor = connection.cursor()
-    parliamentGroupsTuple = map(lambda g: (g.acronym, g.name), parliamentGroups)
-    cursor.executemany("INSERT INTO ParliamentGroups VALUES(?, ?)", parliamentGroupsTuple)
+    parliamentGroupsTuple = map(lambda g: (g.acronym, g.name, g.legislature), parliamentGroups)
+    cursor.executemany("INSERT INTO ParliamentGroups VALUES(?, ?, ?)", parliamentGroupsTuple)
     cursor.close()
 
     connection.commit()
@@ -63,7 +63,7 @@ def insertInitiatives(initiatives):
     votesToInsert = []
 
     for initiative in initiatives:
-        initiativeTuple = (initiative.id, initiative.title, initiative.text)
+        initiativeTuple = (initiative.id, initiative.title, initiative.text, initiative.legislature)
         votesTuple = map(lambda v: (int(v.id), int(initiative.id),
                                     v.phase if v.phase is not None else "",
                                     v.result if v.result is not None else "",
@@ -88,7 +88,7 @@ def insertInitiatives(initiatives):
         parliamentGroupsVotes.extend(list(map(lambda v: (v, voteId, "Abstention"), abstentions)))
         
 
-    cursor.executemany("INSERT INTO Initiatives VALUES(?, ?, ?)", initiativesToInsert)
+    cursor.executemany("INSERT INTO Initiatives VALUES(?, ?, ?, ?)", initiativesToInsert)
     cursor.executemany("INSERT INTO Votes VALUES(?, ?, ?, ?, ?, ?)", votesToInsert)
     cursor.executemany("INSERT INTO ParliamentGroupsVotes VALUES(?, ?, ?)", parliamentGroupsVotes)
 

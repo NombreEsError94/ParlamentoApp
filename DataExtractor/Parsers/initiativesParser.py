@@ -36,6 +36,6 @@ def parseInitiatives():
 
                         parsedVotes.append(Vote(voteId, initiativeId, phase, result, votingDetails, date))
 
-        parsedInitiatives.append(Initiative(initiativeId, title, textLink, parsedVotes))
+        parsedInitiatives.append(Initiative(initiativeId, title, textLink, "XV", parsedVotes))
     
     return parsedInitiatives

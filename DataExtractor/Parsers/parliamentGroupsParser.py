@@ -13,6 +13,6 @@ def parseParliamentGroups():
         acronym = group.find("sigla").text
         name = group.find("nome").text
 
-        parsedGroups.append(ParliamentGroup(acronym, name))
+        parsedGroups.append(ParliamentGroup(acronym, name, "XV"))
     
     return parsedGroups
