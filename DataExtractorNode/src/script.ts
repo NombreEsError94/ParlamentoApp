@@ -1,35 +1,27 @@
 require("dotenv").config()
 
-import axios from "axios";
-import * as fs from 'fs';
-
-
-async function downloadXmlFile(url: string, destination: string) {
-    const response = await axios.get(url, { responseType: 'stream' });
-    const writer = fs.createWriteStream(destination);
-    response.data.pipe(writer);
-
-    return new Promise<void>((resolve, reject) => {
-        writer.on('finish', resolve);
-        writer.on('error', reject);
-    });
-}
+import { downloadXmlFile } from "./utils/fileDownloader";
+import { XMLParser } from "fast-xml-parser";
 
 async function main(){
     const parliamentGroupsFileUrl = process.env.PARLIAMENT_GROUPS_FILE_URL || '';
     const initiativesFileUrl = process.env.INITIATIVES_FILE_URL || '';
-    const parliamentGroupsFileDestination = 'ParliamentGroups.xml';
-    const initiativesFileDestination = 'Initiatives.xml';
 
+
+    const parliamentGroupsContent = await downloadXmlFile(parliamentGroupsFileUrl);
+    console.log('Parliament groups file downloaded');
+
+    const parser = new XMLParser();
+    let jObj = parser.parse(parliamentGroupsContent);
+    const parliamentGroupNode = jObj.Legislatura.GruposParlamentares.pt_gov_ar_objectos_GPOut;
     
-    try{
-        await downloadXmlFile(parliamentGroupsFileUrl, parliamentGroupsFileDestination);
-        console.log('ParliamentGroups file downloaded');
-        await downloadXmlFile(initiativesFileUrl, initiativesFileDestination);
-        console.log('Initiatives file downloaded');
-    }catch(error){
-        console.error('Error downloading file');
+    for(let nodeItem of parliamentGroupNode){
+        console.log(nodeItem.sigla);
+        console.log(nodeItem.nome);
     }
+
+    //const initiativesContent = await downloadXmlFile(initiativesFileUrl);
+    //console.log('Initiatives file downloaded');
 }
 
 main()
