@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, OneToMany, JoinColumn } from "typeorm";
 import "reflect-metadata"
-import { Deputee } from "./Deputee"
+import { Deputee } from "./deputee"
 
 @Entity({ name: 'parliamentGroups'})
 export class ParliamentGroup {

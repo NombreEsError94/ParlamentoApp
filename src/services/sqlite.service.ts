@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { ParliamentGroup } from "../models/ParliamentGroup"
-import { Deputee } from "../models/Deputee"
+import { ParliamentGroup } from "../models/parliamentGroup"
+import { Deputee } from "../models/deputee"
 
 export const AppDataSource = new DataSource({
     type: "sqlite",

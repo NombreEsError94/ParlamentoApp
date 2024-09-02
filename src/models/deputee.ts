@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
-import { ParliamentGroup } from "./ParliamentGroup";
+import { ParliamentGroup } from "./parliamentGroup";
 
 @Entity({ name: "deputees"})
 export class Deputee {
