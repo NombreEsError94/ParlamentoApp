@@ -1,9 +1,7 @@
-import ParliamentGroup from "../models/parliamentGroup";
-import Deputee from "../models/deputee";
-import { databaseClient } from "./database.service";
 
 const PARLIAMENT_GROUPS_COLLECTION_NAME = 'parliamentGroups'
 
+/*
 export async function getParliamentGroups(): Promise<ParliamentGroup[]> {
 
     const allGroups = await databaseClient
@@ -11,7 +9,6 @@ export async function getParliamentGroups(): Promise<ParliamentGroup[]> {
         .collection<ParliamentGroup>(PARLIAMENT_GROUPS_COLLECTION_NAME)
         .find({})
         .toArray() as ParliamentGroup[]
-
     return allGroups
    
 } 
@@ -46,5 +43,5 @@ export async function clear() {
     await databaseClient
         .db(process.env.DB_NAME)
         .collection<ParliamentGroup>(PARLIAMENT_GROUPS_COLLECTION_NAME)
-        .drop()
-}
+        .drop() 
+}*/
