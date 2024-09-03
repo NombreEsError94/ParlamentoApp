@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm"
 import { Initiative } from "./initiative"
 
 @Entity({ name: 'events' })
-export class Event {
+export class InitiativeEvent {
     
     constructor(id: string, date: string, phase: string, initiative: Initiative) {
         this.id = id

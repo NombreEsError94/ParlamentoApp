@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Event } from "./event";
+import { InitiativeEvent } from "./initiativeEvent";
 
 @Entity({ name: 'initiatives' })
 export class Initiative {
@@ -19,6 +19,6 @@ export class Initiative {
     @Column()
     title: string
 
-    @OneToMany(() => Event, (eve) => eve.initiativeId)
+    @OneToMany(() => InitiativeEvent, (eve) => eve.initiativeId)
     events: Event[] | undefined
 }
