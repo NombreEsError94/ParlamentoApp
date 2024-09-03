@@ -1,7 +1,7 @@
 import express, { Request, Response} from 'express'
 import dotenv from 'dotenv'
 import "reflect-metadata"
-import { AppDataSource } from './services/sqlite.service'
+import AppDataSource from './data/appDataSource'
 import { ParliamentGroup } from './models/parliamentGroup'
 import { Deputee } from './models/deputee'
 import { Repository } from 'typeorm'
